@@ -53,7 +53,7 @@ router.post('/register', (req, res) => {
   } else res.status(400).send('Login failed');
 });
 
-router.get('/secretdata', (req, res) => {
+router.get('/secretdata', redirectLogin, (req, res) => {
   // enter your code here
   return res.status(200).end('the prime number is 2305843009213693951');
 });
