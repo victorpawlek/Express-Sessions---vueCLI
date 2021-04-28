@@ -2,6 +2,10 @@ const express = require('express');
 const router = express.Router();
 const users = require('../model/users');
 // enter your code here
+const redirectLogin = (req, res, next) => {
+  if (!req.session.userId) res.status(400).send('You are not logged in!');
+  else next();
+};
 
 router.post('/login', (req, res) => {
   // enter your code here
@@ -19,16 +23,20 @@ router.post('/login', (req, res) => {
   } else res.status(400).send('Login failed');
 });
 
-// router.get('/logout', redirectLogin, (req, res) => {
-//   // enter your code here
-// });
+router.get('/logout', redirectLogin, (req, res) => {
+  // enter your code here
+  req.session.destroy();
+  res.clearCookie(process.env.SESSION_NAME);
+  res.redirect('/');
+});
 
-// router.post('/register', (req, res) => {
-//   // enter your code here
-// });
+router.post('/register', (req, res) => {
+  // enter your code here
+});
 
 router.get('/secretdata', (req, res) => {
   // enter your code here
 });
+
 
 module.exports = router;

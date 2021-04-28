@@ -2,7 +2,7 @@
   <div class="container d-flex flex-column min-vh-100">
     <form @submit.prevent="login">
       <h1 class="text-center my-3">Login</h1>
-      <label>{{ message }}</label>
+      <p class="text-center text-danger">{{ message }}</p>
       <div class="row">
         <div class="col-3 offset-2">
           <input
@@ -49,21 +49,23 @@ export default {
   methods: {
     async login() {
       // enter your code here
-      let a = await axios({
-        url: '/login',
-        method: 'POST',
-        data: {
-          email: this.email,
-          password: this.password,
-        },
-      });
+      try {
+        let a = await axios({
+          url: '/login',
+          method: 'POST',
+          data: {
+            email: this.email,
+            password: this.password,
+          },
+        });
 
-      if (a.status == 200) {
-        localStorage.setItem('user', JSON.stringify(a));
-      } 
-      // else {
-      //   console.log(a.data);
-      // }
+        if (a.status == 200) {
+          localStorage.setItem('user', JSON.stringify(a));
+          window.location.href = '/';
+        }
+      } catch (error) {
+        this.message = error.response.data;
+      }
     },
   },
 };
