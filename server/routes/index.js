@@ -32,11 +32,29 @@ router.get('/logout', redirectLogin, (req, res) => {
 
 router.post('/register', (req, res) => {
   // enter your code here
+  const email = req.body.email;
+  const password = req.body.password;
+  const name = req.body.name;
+
+  if (email && password && name) {
+    if (users.find((el) => el.email === email)) {
+      res.status(409).send('E-Mail already registered');
+    } else {
+      const id = Math.max(...users.map((el) => el.id)) + 1;
+      console.log(id);
+      users.push({
+        id: id,
+        name: name,
+        email: email,
+        password: password,
+      });
+      res.status(200).send('OK');
+    }
+  } else res.status(400).send('Login failed');
 });
 
 router.get('/secretdata', (req, res) => {
   // enter your code here
 });
-
 
 module.exports = router;
